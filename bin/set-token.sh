@@ -6,11 +6,11 @@ then
 fi
 if grep -q "edb-env" .bashrc;
 then
-  echo "EDB_SUBSCRIPTION_TOKEN already set, skipping"
+  echo ".edb-env already sourced already set, skipping"
 else
   echo "source ~/.edb-env" >> ~/.bashrc
 fi
-echo "Setting EDB_SUBSCRIPION_TOKEN"
+echo "Setting EDB environment"
 echo "export EDB_SUBSCRIPTION_TOKEN=$1" > .edb-env
 echo "export EDB_SUBSCRIPTION_PLAN=enterprise" >> .edb-env
 echo "export EDB_REPO_TYPE=deb" >> .edb-env
