@@ -11,6 +11,6 @@ else
   echo "source ~/.edb-env" >> ~/.bashrc
 fi
 echo "Setting EDB_SUBSCRIPION_TOKEN"
-echo "export EDB_SUBSCRIPION_TOKEN=$1" > .edb-env
+echo "export EDB_SUBSCRIPTION_TOKEN=$1" > .edb-env
 echo "export EDB_SUBSCRIPTION_PLAN=enterprise" >> .edb-env
 echo "export EDB_REPO_TYPE=deb" >> .edb-env
