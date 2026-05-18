@@ -5,6 +5,8 @@ if [ -z $EDB_SUBSCRIPTION_TOKEN ]; then
   echo "Subscription token not set - chickening out of script"
   exit 0
 fi
+source $HOME/.edb-env
+
 # For PGD Expanded, there are two repositories to install.
 echo "Adding repositories"
 curl -1sSLf "https://downloads.enterprisedb.com/$EDB_SUBSCRIPTION_TOKEN/$EDB_SUBSCRIPTION_PLAN/setup.$EDB_REPO_TYPE.sh" | sudo -E bash
