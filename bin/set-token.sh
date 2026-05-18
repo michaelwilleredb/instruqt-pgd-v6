@@ -15,6 +15,6 @@ echo "export EDB_SUBSCRIPTION_TOKEN=$1" > .edb-env
 echo "export EDB_SUBSCRIPTION_PLAN=enterprise" >> .edb-env
 echo "export EDB_REPO_TYPE=deb" >> .edb-env
 
-for a db-1 db-2 db-3; do
+for a in db-1 db-2 db-3; do
   scp .edb-env root@$1:.
 done
