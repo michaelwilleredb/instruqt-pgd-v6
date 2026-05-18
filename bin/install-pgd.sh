@@ -1,11 +1,15 @@
 
 T=/tmp/instruqt-setup.log
 
+if [ -f $HOME/.edb-env ]; then
+  source $HOME/.edb-env
+fi
+
+
 if [ -z $EDB_SUBSCRIPTION_TOKEN ]; then
   echo "Subscription token not set - chickening out of script"
   exit 0
 fi
-source $HOME/.edb-env
 
 # For PGD Expanded, there are two repositories to install.
 echo "Adding repositories"
