@@ -17,13 +17,14 @@ run_in_parallel(){
 }
 run_serial(){
     for a in $SERVERS do
-    echo "==========================================="
-    echo " "
-    echo "                    $a"
-    echo " "
-    echo " "
-    printf "%s\n" "${a}" | xargs -I {} -P 3 ssh -o "StrictHostKeyChecking=no" {} "$1"
-    check_result $?
+        echo "==========================================="
+        echo " "
+        echo "                    $a"
+        echo " "
+        echo " "
+        printf "%s\n" "${a}" | xargs -I {} -P 3 ssh -o "StrictHostKeyChecking=no" {} "$1"
+        check_result $?
+    done
 }
 
 # 1. Define your servers
