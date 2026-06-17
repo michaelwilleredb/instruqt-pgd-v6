@@ -10,14 +10,14 @@ to be shared with participants - unless a temporary EDB Subscription Token is us
 
 ### Set EDB Suscription token on all servers
 ```bash
-set-env.sh "---YOUR TOKEN---"
+set-token.sh "---YOUR TOKEN---"
 ```
 
 ### Install EPAS and PGD
 Next step is to install EDB Advanced Server and PGD on all three servers.
 
 ```bash
-run-on-all-dbs.sh "$HOME/instruct-pgd-v6/bin/pgd-install.sh"
+run-on-all-dbs.sh "$HOME/instruqt-pgd-v6/bin/pgd-install.sh"
 ```
 
 

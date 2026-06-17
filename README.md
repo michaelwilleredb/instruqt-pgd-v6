@@ -12,3 +12,7 @@ db-1, 2 and 3 have EDB Advanced Server and PGD installed.
 
 client has the PGD CLI installed and is configured to connect to all the db-servers.
 
+## Demo content
+
+1) **Configure PGD** - In this challenge you will install PGD on the three VMs designated to be used for databases
+2) 
