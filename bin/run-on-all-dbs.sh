@@ -16,12 +16,12 @@ run_in_parallel(){
     check_result $?
 }
 run_serial(){
-    for a in $SERVERS do
+    for a in "${SERVERS[@]}"; do
         echo "==========================================="
         echo " "
         echo "                    $a"
         echo " "
-        echo " "
+        echo "==========================================="
         printf "%s\n" "${a}" | xargs -I {} -P 3 ssh -o "StrictHostKeyChecking=no" {} "$1"
         check_result $?
     done
