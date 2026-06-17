@@ -32,7 +32,7 @@ SERVERS=("db-1" "db-2" "db-3")
 
 PARALLEL=true
 
-if [ "$1" === "-s" ]; then
+if [ "$1" == "-s" ]; then
     PARALLEL=false
     shift
 fi
