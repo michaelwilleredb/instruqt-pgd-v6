@@ -1,4 +1,4 @@
-sudo  -iu postgres
+sudo  -iu enterprisedb bash << 'EOF'
 export PG_VERSION=17
 export PATH=$PATH:/usr/edb/pge$PG_VERSION/bin/
 export PGDATA=/var/lib/edb-pge/$PG_VERSION/data/
@@ -27,3 +27,5 @@ case $1 in
     exit 0
     ;;
 esac
+
+EOF
