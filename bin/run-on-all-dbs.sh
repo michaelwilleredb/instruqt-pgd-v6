@@ -1,12 +1,43 @@
+check_result(){
+    if [ $1 -eq 0 ]; then
+        echo "============================================"
+        echo " "
+        echo " "
+        echo "SUCCESS."
+    else
+        echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+        echo " "
+        echo " "
+        echo "Error: FAILED"
+    fi
+}
+run_in_parallel(){
+    printf "%s\n" "${SERVERS[@]}" | xargs -I {} -P 3 ssh -o "StrictHostKeyChecking=no" {} "$1"
+    check_result $?
+}
+run_serial(){
+    for a in $SERVERS do
+    echo "==========================================="
+    echo " "
+    echo "                    $a"
+    echo " "
+    echo " "
+    printf "%s\n" "${a}" | xargs -I {} -P 3 ssh -o "StrictHostKeyChecking=no" {} "$1"
+    check_result $?
+}
+
 # 1. Define your servers
 SERVERS=("db-1" "db-2" "db-3")
 
-# 2. Run the command in parallel
-printf "%s\n" "${SERVERS[@]}" | xargs -I {} -P 3 ssh -o "StrictHostKeyChecking=no" {} "$1"
+PARALLEL=true
 
-# 3. Check if everything succeeded
-if [ $? -eq 0 ]; then
-    echo "🎉 Success! All servers completed without errors."
+if [ "$1" === "-s" ]; then
+    PARALLEL=false
+    shift
+fi
+
+if $PARALLEL; then
+    run_in_parallel "$1"
 else
-    echo "❌ Error: One or more servers failed."
+    run_serial "$1"
 fi

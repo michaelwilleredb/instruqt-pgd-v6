@@ -9,6 +9,9 @@ to be shared with participants - unless a temporary EDB Subscription Token is us
 ---
 
 ### Set EDB Suscription token on all servers
+
+The following command will export your download token to all the database servers.
+
 ```bash
 set-token.sh "---YOUR TOKEN---"
 ```
@@ -20,4 +23,6 @@ Next step is to install EDB Advanced Server and PGD on all three servers.
 run-on-all-dbs.sh "$HOME/instruqt-pgd-v6/bin/pgd-install.sh"
 ```
 
+Note that the install of EPAS and PGD libraries runs in parallel on all servers.
 
+Once this has completed, you can move on to the next challenge.
