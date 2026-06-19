@@ -9,6 +9,8 @@ export user=enterprisedb
 export port=5444
 export dbname=edb # edb database already exists, we'll reuse it.
 
+hostname=$(hostname)
+
 db1_dsn="host=db-1 user=$user port=$port dbname=$dbname"
 db2_dsn="host=db-2 user=$user port=$port dbname=$dbname"
 db3_dsn="host=db-3 user=$user port=$port dbname=$dbname"
@@ -18,7 +20,7 @@ find /etc/edb-as/17/main -maxdepth 1 -type f -exec ln -sf {} /var/lib/edb-as/17/
 
 extra_options="--bindir /usr/lib/edb-as/17/bin"
 
-case $1 in
+case $hostname in
   db-1)
     echo "execute: pgd node node-1 setup --dsn \"$db1_dsn\"  --group-name group-1 $extra_options"
     pgd node node-1 setup --dsn "$db1_dsn"  --group-name group-1 $extra_options
