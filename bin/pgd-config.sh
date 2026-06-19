@@ -2,7 +2,7 @@ sudo  -iu enterprisedb bash << 'EOF'
 echo "$0 - running"
 export PG_VERSION=17
 export PATH=$PATH:/usr/edb/as-common/bin
-export PGDATA=/var/lib/edb-as/$PG_VERSION/data/
+export PGDATA=/var/lib/edb-as/$PG_VERSION/main/
 export PGPASSWORD=secret
 
 export user=enterprisedb
