@@ -18,6 +18,12 @@ curl -1sSLf "https://downloads.enterprisedb.com/$EDB_SUBSCRIPTION_TOKEN/postgres
 
 
 export PG_VERSION=17
-export EDB_PACKAGES="edb-as$PG_VERSION-server edb-pgd6-expanded-epas$PG_VERSION"
+export EDB_PACKAGES="edb-as$PG_VERSION-server edb-pgd6-expanded-epas$PG_VERSION edb-pgd6-cli"
 echo "Install $EDB_PACKAGES"
-sudo apt install -y $EDB_PACKAGES 
+sudo apt install -y $EDB_PACKAGES
+
+sudo -iu enterprisedb bash << 'EOF'
+
+psql edb -c "ALTER USER enterprisedb PASSWORD 'secret'"
+
+EOF
