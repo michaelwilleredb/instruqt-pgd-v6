@@ -1,33 +1,6 @@
 #
 # pgd_config.sh
 #
-restart_db(){
-  systemctl restart pgd # Ensure clean start
-  until $PG_BINDIR/pg_isready -h localhost -p $dbport; do sleep 1; done
-}
-create_service(){
-  cat > /etc/systemd/system/pgd.service << SVC_EOF
-[Unit]
-Description=EDB Postgres $PG_VERSION PGD Node
-After=network.target
-
-[Service]
-Type=forking
-User=enterprisedb
-Environment=PGDATA=$PGDATA
-ExecStart=$PG_BINDIR/pg_ctl start -D $PGDATA
-ExecStop=$PG_BINDIR/pg_ctl stop -D $PGDATA
-ExecReload=$PG_BINDIR/pg_ctl reload -D $PGDATA
-TimeoutSec=300
-
-[Install]
-WantedBy=multi-user.target
-SVC_EOF
-
-systemctl daemon-reload
-systemctl enable pgd
-}
-
 export dbuser=enterprisedb
 export dbport=5444
 export dbname=pgd
@@ -47,9 +20,12 @@ sudo  -iu enterprisedb bash << EOF
 
 echo "$hostname - running"
 
-export PATH=$PATH:$PG_BINDIR
-export PGDATA=$PGDATA
-export PGPASSWORD=$PGPASSWORD
+export PG_FLAVOR
+export PG_VERSION
+export PG_BINDIR
+export PATH
+export PGDATA
+export PGPASSWORD
 
 db1_dsn="host=db-1 user=$dbuser port=$dbport dbname=$dbname"
 db2_dsn="host=db-2 user=$dbuser port=$dbport dbname=$dbname"
@@ -81,6 +57,8 @@ esac
 
 psql -p $dbport -U $dbuser postgres -c "ALTER USER enterprisedb PASSWORD '$PGPASSWORD';"
 psql -p $dbport -U $dbuser postgres -c "ALTER SYSTEM SET listen_addresses = '*';"
-EOF
 
-restart_db
+$PG_BINDIR/pg_ctl -D $PGDATA restart
+until $PG_BINDIR/pg_isready -h localhost -p $dbport; do sleep 1; done
+
+EOF
