@@ -20,12 +20,15 @@ extra_options="--bindir /usr/lib/edb-as/17/bin"
 
 case $1 in
   db-1)
+    echo "execute: pgd node node-1 setup --dsn \"$db1_dsn\"  --group-name group-1 $extra_options"
     pgd node node-1 setup --dsn "$db1_dsn"  --group-name group-1 $extra_options
     ;;
   db-2)
+    echo "execute: pgd node node-2 setup --dsn \"$db2_dsn\"  --group-name group-1 --cluster-dsn \"$db1_dsn\" $extra_options"
     pgd node node-2 setup --dsn "$db2_dsn"  --group-name group-1 --cluster-dsn "$db1_dsn" $extra_options
     ;;
   db-3)
+    echo "execute: pgd node node-3 setup --dsn \"$db3_dsn\"  --group-name group-1 --cluster-dsn \"$db1_dsn\" $extra_options"
     pgd node node-3 setup --dsn "$db3_dsn"  --group-name group-1 --cluster-dsn "$db1_dsn" $extra_options
     ;;
   *)
