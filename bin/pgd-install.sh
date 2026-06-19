@@ -22,8 +22,13 @@ export EDB_PACKAGES="edb-as$PG_VERSION-server edb-pgd6-expanded-epas$PG_VERSION 
 echo "Install $EDB_PACKAGES"
 sudo apt install -y $EDB_PACKAGES
 
-sudo -iu enterprisedb bash << 'EOF'
 
+sudo -iu enterprisedb bash <<'EOF'
+
+echo "
+# Allow external connections
+host    all    all    0.0.0.0/0    scram-sha-256" >> /etc/edb-as/17/main/pg_hba.conf
+
+pg_ctl reload -D /var/lib/edb-as/17/main
 psql edb -c "ALTER USER enterprisedb PASSWORD 'secret'"
-
 EOF
