@@ -30,7 +30,7 @@ systemctl enable pgd
 
 export dbuser=enterprisedb
 export dbport=5444
-export dbname=edb
+export dbname=pgd
 
 export PG_FLAVOR=edb-as
 export PG_VERSION=17
