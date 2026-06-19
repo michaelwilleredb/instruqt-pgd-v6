@@ -48,6 +48,10 @@ case $hostname in
 esac
 
 psql -p $dbport -U $dbuser edb -c "ALTER SYSTEM SET listen_addresses = '*';"
-pg_ctl restart -D $PGDATA
-
 EOF
+
+export PG_BINDIR=/usr/lib/edb-as/17/bin
+export PATH=$PATH:$PG_BINDIR
+
+systemctl restart edb-as@17-main
+until $PG_BINDIR/pg_isready -h localhost -p 5444; do sleep 1; done
