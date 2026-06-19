@@ -28,7 +28,6 @@ systemctl daemon-reload
 systemctl enable pgd
 }
 
-create_service
 export dbuser=enterprisedb
 export dbport=5444
 export dbname=edb
@@ -41,6 +40,8 @@ export PGDATA=/var/lib/$PG_FLAVOR/$PG_VERSION/pgd
 export PGPASSWORD=secret
 
 hostname=$(hostname)
+
+create_service
 
 sudo  -iu enterprisedb bash << EOF
 
