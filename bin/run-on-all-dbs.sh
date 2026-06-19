@@ -12,6 +12,8 @@ check_result(){
     fi
 }
 run_in_parallel(){
+    printf "================\nparallel run expect mixed output\n================\n\n\n"
+
     printf "%s\n" "${SERVERS[@]}" | xargs -I {} -P 3 ssh -o "StrictHostKeyChecking=no" {} "$1"
     check_result $?
 }
