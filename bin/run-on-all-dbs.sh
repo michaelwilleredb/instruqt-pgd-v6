@@ -44,9 +44,11 @@ fi
 case $1 in 
     -1)
         SERVERS=("db-1")
+        shift
         ;;
     -2)
         SERVERS=("db-1" "db-2")
+        shift
         ;;
 esac
 
