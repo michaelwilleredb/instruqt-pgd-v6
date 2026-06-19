@@ -12,7 +12,7 @@ check_result(){
     fi
 }
 run_in_parallel(){
-    printf "%s\n" "${SERVERS[@]}" | xargs -I {} -P 3 ssh -o "StrictHostKeyChecking=no" {} "$1"
+    printf "%s\n" "${SERVERS[@]}" | xargs -I {} -P 3 ssh -o "StrictHostKeyChecking=no" {} "$1" {}
     check_result $?
 }
 run_serial(){
@@ -22,7 +22,7 @@ run_serial(){
         echo "                    $a"
         echo " "
         echo "==========================================="
-        printf "%s\n" "${a}" | xargs -I {} -P 3 ssh -o "StrictHostKeyChecking=no" {} "$1"
+        printf "%s\n" "${a}" | xargs -I {} -P 3 ssh -o "StrictHostKeyChecking=no" {} "$1" {}
         check_result $?
     done
 }
