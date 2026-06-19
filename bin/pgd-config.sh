@@ -1,25 +1,32 @@
+#
+# This script expects a Debian/Ubuntu install, with the "strange" placement of GUC files
+# 
+#
+
 sudo  -iu enterprisedb bash << 'EOF'
 echo "$0 - running"
 export dbuser=enterprisedb
 export dbport=5444
 export dbname=pgddb
 
+export PG_FLAVOR=edb-as
 export PG_VERSION=17
-export PATH=$PATH:/usr/edb/as-common/bin
-export PGDATA=/var/lib/edb-as/$PG_VERSION/main/
+export PATH=$PATH:/usr/lib/$PG_FLAVOR/$PG_VERSION/bin
+export PGDATA=/var/lib/$PG_FLAVOR/$PG_VERSION/main/
 export PGPASSWORD=secret
 
 hostname=$(hostname)
 
-# Link all config-files (workaround for the pgd CLI)
-find /etc/edb-as/17/main -maxdepth 1  -exec ln -sf {} /var/lib/edb-as/17/main/ \;
+# Link all config-files (workaround for the pgd CLI) - pgd CLI can't use the Debian flavor placement
+# And it's more PostgreSQL to have them live in the PGDATA directory
+find /etc/$PG_FLAVOR/17/main -maxdepth 1  -exec ln -sf {} /var/lib/$PG_FLAVOR/17/main/ \;
 
 
 db1_dsn="host=db-1 user=$dbuser port=$dbport dbname=$dbname"
 db2_dsn="host=db-2 user=$dbuser port=$dbport dbname=$dbname"
 db3_dsn="host=db-3 user=$dbuser port=$dbport dbname=$dbname"
 
-extra_options="--bindir /usr/lib/edb-as/17/bin"
+extra_options="--bindir /usr/lib/$PG_FLAVOR/17/bin"
 
 case $hostname in
   db-1)
