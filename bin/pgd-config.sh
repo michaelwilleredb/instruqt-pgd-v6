@@ -2,7 +2,7 @@
 # pgd_config.sh
 #
 
-sudo  -iu enterprisedb bash << EOF
+sudo  -iu enterprisedb bash << 'EOF'
 
 export dbuser=enterprisedb
 export dbport=5444
@@ -27,9 +27,6 @@ extra_options="--bindir $PG_BINDIR -D $PGDATA"
 
 case $hostname in
   db-1)
-    echo "Create the initial database"
-    ${PG_BINDIR}/initdb -U enterprisedb ${PGDATA}
-
     echo "execute: pgd node node-1 setup --dsn \"$db1_dsn\"  --group-name group-1 $extra_options"
     pgd node node-1 setup --dsn "$db1_dsn"  --group-name group-1 $extra_options
     ;;
