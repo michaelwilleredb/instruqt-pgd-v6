@@ -26,10 +26,5 @@ sudo apt install -y $EDB_PACKAGES
 
 
 sudo -iu enterprisedb bash <<'EOF'
-
-echo "
-# Allow external connections
-host    all    all    0.0.0.0/0    scram-sha-256" >> /etc/edb-as/17/main/pg_hba.conf
-
 psql edb -c "SELECT pg_reload_conf();" -c "ALTER USER enterprisedb PASSWORD 'secret'"
 EOF

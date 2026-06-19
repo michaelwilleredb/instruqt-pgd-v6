@@ -1,10 +1,6 @@
 #
-# This script expects a Debian/Ubuntu install, with the "strange" placement of GUC files
 # 
 #
-
-sudo  -iu enterprisedb bash << 'EOF'
-echo "$0 - running"
 export dbuser=enterprisedb
 export dbport=5444
 export dbname=pgddb
@@ -17,11 +13,15 @@ export PGPASSWORD=secret
 
 hostname=$(hostname)
 
-# Link all config-files (workaround for the pgd CLI) - pgd CLI can't use the Debian flavor placement
-# And it's more PostgreSQL to have them live in the PGDATA directory
-find /etc/$PG_FLAVOR/17/main -maxdepth 1  -exec ln -sf {} /var/lib/$PG_FLAVOR/17/main/ \;
+
+# Removing the pre-installed database
+systemctl stop edb-as@17-main
+rm -rf $PGDATA
+rm -rf /etc/edb-as/17/main
 
 
+sudo  -iu enterprisedb bash << EOF
+echo "$hostname - running"
 db1_dsn="host=db-1 user=$dbuser port=$dbport dbname=$dbname"
 db2_dsn="host=db-2 user=$dbuser port=$dbport dbname=$dbname"
 db3_dsn="host=db-3 user=$dbuser port=$dbport dbname=$dbname"
@@ -49,9 +49,6 @@ esac
 
 psql -p $dbport -U $dbuser edb -c "ALTER SYSTEM SET listen_addresses = '*';"
 EOF
-
-export PG_BINDIR=/usr/lib/edb-as/17/bin
-export PATH=$PATH:$PG_BINDIR
 
 systemctl restart edb-as@17-main
 until $PG_BINDIR/pg_isready -h localhost -p 5444; do sleep 1; done

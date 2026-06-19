@@ -9,6 +9,7 @@ check_result(){
         echo " "
         echo " "
         echo "Error: FAILED"
+        exit -1
     fi
 }
 run_in_parallel(){
@@ -24,7 +25,7 @@ run_serial(){
         echo "                    $a"
         echo " "
         echo "==========================================="
-        printf "%s\n" "${a}" | xargs -I {} -P 3 ssh -o "StrictHostKeyChecking=no" {} "$1"
+        ssh -o "StrictHostKeyChecking=no" $a "$1"
         check_result $?
     done
 }
