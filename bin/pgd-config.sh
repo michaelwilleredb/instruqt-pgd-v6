@@ -7,12 +7,12 @@ export dbname=pgddb
 
 export PG_FLAVOR=edb-as
 export PG_VERSION=17
-export PATH=$PATH:/usr/lib/$PG_FLAVOR/$PG_VERSION/bin
+export PG_BINDIR=/usr/lib/$PG_FLAVOR/$PG_VERSION/bin
+export PATH=$PATH:$PG_BINDIR
 export PGDATA=/var/lib/$PG_FLAVOR/$PG_VERSION/main/
 export PGPASSWORD=secret
 
 hostname=$(hostname)
-
 
 # Removing the pre-installed database
 systemctl stop edb-as@17-main
@@ -22,6 +22,11 @@ rm -rf /etc/edb-as/17/main
 
 sudo  -iu enterprisedb bash << EOF
 echo "$hostname - running"
+
+export PATH=$PATH:$PG_BINDIR
+export PGDATA=$PGDATA
+export PGPASSWORD=$PGPASSWORD
+
 db1_dsn="host=db-1 user=$dbuser port=$dbport dbname=$dbname"
 db2_dsn="host=db-2 user=$dbuser port=$dbport dbname=$dbname"
 db3_dsn="host=db-3 user=$dbuser port=$dbport dbname=$dbname"
