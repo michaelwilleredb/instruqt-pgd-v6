@@ -1,6 +1,9 @@
 #
 # pgd_config.sh
 #
+
+sudo  -iu enterprisedb bash << EOF
+
 export dbuser=enterprisedb
 export dbport=5444
 export dbname=pgd
@@ -14,16 +17,7 @@ export PGPASSWORD=secret
 
 hostname=$(hostname)
 
-sudo  -iu enterprisedb bash << EOF
-
 echo "$hostname - running"
-
-export PG_FLAVOR
-export PG_VERSION
-export PG_BINDIR
-export PATH
-export PGDATA
-export PGPASSWORD
 
 db1_dsn="host=db-1 user=$dbuser port=$dbport dbname=$dbname"
 db2_dsn="host=db-2 user=$dbuser port=$dbport dbname=$dbname"
