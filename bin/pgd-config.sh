@@ -18,7 +18,7 @@ db3_dsn="host=db-3 user=$user port=$port dbname=$dbname"
 # Link all config-files (workaround for the pgd CLI)
 find /etc/edb-as/17/main -maxdepth 1  -exec ln -sf {} /var/lib/edb-as/17/main/ \;
 
-extra_options="--bindir /usr/lib/edb-as/17/bin"
+extra_options="--bindir /usr/lib/edb-as/17/bin --listen-addr '*'"
 
 case $hostname in
   db-1)
