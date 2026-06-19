@@ -14,8 +14,6 @@ export PGPASSWORD=secret
 
 hostname=$(hostname)
 
-create_service
-
 sudo  -iu enterprisedb bash << EOF
 
 echo "$hostname - running"
