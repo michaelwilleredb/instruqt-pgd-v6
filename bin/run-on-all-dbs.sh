@@ -40,6 +40,16 @@ if [ "$1" == "-s" ]; then
     shift
 fi
 
+# Workaround to make debug easier
+case $1 in 
+    -1)
+        SERVERS=("db-1")
+        ;;
+    -2)
+        SERVERS=("db-1" "db-2")
+        ;;
+esac
+
 if $PARALLEL; then
     run_in_parallel "$1"
 else

@@ -1,9 +1,31 @@
 #
-# 
+# pgd_config.sh
 #
+create_service(){
+  cat > /etc/systemd/system/pgd.service << SVC_EOF
+[Unit]
+Description=EDB Postgres $PG_VERSION PGD Node
+After=network.target
+
+[Service]
+Type=forking
+User=enterprisedb
+Environment=PGDATA=$PGDATA
+ExecStart=$PG_BINDIR/pg_ctl start -D $PGDATA
+ExecStop=$PG_BINDIR/pg_ctl stop -D $PGDATA
+ExecReload=$PG_BINDIR/pg_ctl reload -D $PGDATA
+TimeoutSec=300
+
+[Install]
+WantedBy=multi-user.target
+SVC_EOF
+
+systemctl daemon-reload
+systemctl enable pgd
+}
 export dbuser=enterprisedb
 export dbport=5444
-export dbname=pgddb
+export dbname=edb
 
 export PG_FLAVOR=edb-as
 export PG_VERSION=17
@@ -14,13 +36,8 @@ export PGPASSWORD=secret
 
 hostname=$(hostname)
 
-# Removing the pre-installed database
-systemctl stop edb-as@17-main
-rm -rf $PGDATA
-rm -rf /etc/edb-as/17/main
-
-
 sudo  -iu enterprisedb bash << EOF
+
 echo "$hostname - running"
 
 export PATH=$PATH:$PG_BINDIR
@@ -31,7 +48,7 @@ db1_dsn="host=db-1 user=$dbuser port=$dbport dbname=$dbname"
 db2_dsn="host=db-2 user=$dbuser port=$dbport dbname=$dbname"
 db3_dsn="host=db-3 user=$dbuser port=$dbport dbname=$dbname"
 
-extra_options="--bindir /usr/lib/$PG_FLAVOR/17/bin"
+extra_options="--bindir $PG_BINDIR -D $PGDATA --listen-addr '*'"
 
 case $hostname in
   db-1)
@@ -52,8 +69,10 @@ case $hostname in
     ;;
 esac
 
-psql -p $dbport -U $dbuser edb -c "ALTER SYSTEM SET listen_addresses = '*';"
+psql -p $dbport -U $dbuser postgres -c "ALTER USER enterprisedb PASSWORD '$PGPASSWORD';"
+psql -p $dbport -U $dbuser postgres -c "ALTER SYSTEM SET listen_addresses = '*';"
 EOF
 
-systemctl restart edb-as@17-main
-until $PG_BINDIR/pg_isready -h localhost -p 5444; do sleep 1; done
+create_service
+systemctl restart pgd # Ensure clean start
+until $PG_BINDIR/pg_isready -h localhost -p $dbport; do sleep 1; done
