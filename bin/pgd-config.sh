@@ -47,7 +47,7 @@ esac
 psql -p $dbport -U $dbuser postgres -c "ALTER USER enterprisedb PASSWORD '$PGPASSWORD';"
 psql -p $dbport -U $dbuser postgres -c "ALTER SYSTEM SET listen_addresses = '*';"
 
-$PG_BINDIR/pg_ctl -D $PGDATA restart
-until $PG_BINDIR/pg_isready -h localhost -p $dbport; do sleep 1; done
+$PG_BINDIR/pg_ctl restart -D $PGDATA -l /var/log/edb-as/${PG_FLAVOR}-${PG_VERSION}-${dbname}.log
+until $PG_BINDIR/pg_isready -h localhost -p $dbport -U $dbuser; do sleep 1; done
 
 EOF
